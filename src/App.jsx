@@ -1,0 +1,63 @@
+import { useRef, useState } from 'react'
+import Hero from './components/Hero.jsx'
+import CoupleSection from './components/CoupleSection.jsx'
+import Gallery from './components/Gallery.jsx'
+import Agenda from './components/Agenda.jsx'
+import LocationMap from './components/LocationMap.jsx'
+import RSVPForm from './components/RSVPForm.jsx'
+import GreetingsLoop from './components/GreetingsLoop.jsx'
+import MusicToggle from './components/MusicToggle.jsx'
+import { COUPLE } from './data/config.js'
+
+export default function App() {
+  const rsvpRef = useRef(null)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  return (
+    <main className="bg-cream">
+      <MusicToggle />
+
+      <Hero onRSVPClick={() => rsvpRef.current?.scrollIntoView({ behavior: 'smooth' })} />
+
+      <section className="px-6 py-20 sm:py-28">
+        <CoupleSection />
+      </section>
+
+      <section className="bg-ink/[0.03] px-6 py-20 sm:py-28">
+        <h2 className="mb-2 text-center font-display text-2xl text-ink">
+          Photo Gallery
+        </h2>
+        <Gallery />
+      </section>
+
+      <section className="px-6 py-20 sm:py-28">
+        <Agenda />
+      </section>
+
+      <section className="bg-ink/[0.03] px-6 py-20 sm:py-28">
+        <h2 className="mb-10 text-center font-script text-4xl text-ink sm:text-5xl">
+          Location
+        </h2>
+        <LocationMap />
+      </section>
+
+      <section ref={rsvpRef} className="px-6 py-20 sm:py-28">
+        <h2 className="mb-10 text-center font-script text-4xl text-ink sm:text-5xl">
+          RSVP
+        </h2>
+        <RSVPForm onSubmitted={() => setRefreshKey((k) => k + 1)} />
+      </section>
+
+      <section className="bg-ink/[0.03] px-0 py-20 sm:py-28">
+        <h2 className="mb-10 text-center font-script text-4xl text-ink sm:text-5xl">
+          Messages for us
+        </h2>
+        <GreetingsLoop refreshKey={refreshKey} />
+      </section>
+
+      <footer className="py-10 text-center text-xs uppercase tracking-wide-label text-ink/40">
+        With love, {COUPLE.name1} &amp; {COUPLE.name2}
+      </footer>
+    </main>
+  )
+}
