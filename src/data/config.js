@@ -14,16 +14,10 @@ export const COUPLE = {
 export const AGENDA = [
   {
     title: 'Ceremony',
-    date: 'Sunday, December 19, 2026',
+    date: 'Saturday, December 19, 2026',
     timeRange: 'From 4:00 PM to 11:30 PM',
     location: 'The Grand Walawwa, Kegalle',
-  },
-  {
-    title: 'Reception',
-    date: 'Sunday, September 18, 2026',
-    timeRange: 'From 6:30 PM to 11:00 PM',
-    location: 'The Grand Garden Hall, Colombo',
-  },
+  }
 ]
 
 // A short verse or quote shown under the agenda.

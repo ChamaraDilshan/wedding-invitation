@@ -23,29 +23,6 @@ html, body {
   letter-spacing: 0.25em;
 }
 
-/* Greetings marquee */
-.marquee-track {
-  display: flex;
-  gap: 1.5rem;
-  width: max-content;
-  animation: marquee 40s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}
-
 .animate-spin-slow {
   animation: spin 3s linear infinite;
 }
