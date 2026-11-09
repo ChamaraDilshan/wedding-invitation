@@ -1,4 +1,4 @@
-import { AGENDA, LOVE_QUOTE } from '../data/config.js'
+import { AGENDA, LOVE_QUOTE, FOOTNOTE } from '../data/config.js'
 
 function IconCircle({ children }) {
   return (
@@ -32,6 +32,11 @@ function EventCard({ event }) {
         </svg>
       </IconCircle>
       <p className="text-ink/80">{event.timeRange}</p>
+      {event.note && (
+        <p className="-mt-2 text-sm font-semibold uppercase tracking-[0.15em] text-olive">
+          {event.note}
+        </p>
+      )}
 
       <IconCircle>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -45,7 +50,7 @@ function EventCard({ event }) {
         href={mapsUrl}
         target="_blank"
         rel="noreferrer"
-        className="mt-1 rounded-md bg-ink px-6 py-3 text-xs uppercase tracking-wide-label text-cream transition hover:opacity-90"
+        className="mt-1 rounded-md bg-olive px-6 py-3 text-xs uppercase tracking-wide-label text-cream transition hover:opacity-90"
       >
         Navigate
       </a>
@@ -59,6 +64,10 @@ export default function Agenda() {
       {AGENDA.map((event) => (
         <EventCard key={event.title} event={event} />
       ))}
+
+      {FOOTNOTE && (
+        <p className="-mt-6 text-center font-script text-3xl text-leaf">{FOOTNOTE}</p>
+      )}
 
       {LOVE_QUOTE && (
         <p className="mx-auto max-w-md whitespace-pre-line text-center font-display text-lg italic text-ink/80">

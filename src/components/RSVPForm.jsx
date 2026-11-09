@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { APPS_SCRIPT_URL, RSVP_SECRET } from '../data/config.js'
 
+const MIN_GUESTS = 1
+const MAX_GUESTS = 10
+
 const initialForm = {
   status: null, // 'yes' | 'no'
   name: '',
@@ -13,6 +16,16 @@ export default function RSVPForm({ onSubmitted }) {
   const [state, setState] = useState('idle') // idle | submitting | success | error
 
   const canSubmit = form.status && form.name.trim().length > 0
+
+  function changeGuests(delta) {
+    setForm((f) => {
+      const current = Number(f.guests) || MIN_GUESTS
+      return {
+        ...f,
+        guests: Math.min(MAX_GUESTS, Math.max(MIN_GUESTS, current + delta)),
+      }
+    })
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -30,7 +43,7 @@ export default function RSVPForm({ onSubmitted }) {
         body: JSON.stringify({
           status: form.status,
           name: form.name.trim(),
-          guests: form.status === 'yes' ? form.guests : 0,
+          guests: form.status === 'yes' ? Number(form.guests) || MIN_GUESTS : 0,
           greeting: form.greeting.trim(),
           timestamp: new Date().toISOString(),
           secret: RSVP_SECRET,
@@ -53,7 +66,7 @@ export default function RSVPForm({ onSubmitted }) {
           Your response has been received. We can't wait to celebrate with you.
         </p>
         <button
-          className="mt-6 text-sm underline text-ink/60"
+          className="mt-6 text-sm underline text-ink/75"
           onClick={() => setState('idle')}
         >
           Submit another response
@@ -65,7 +78,7 @@ export default function RSVPForm({ onSubmitted }) {
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex max-w-md flex-col gap-6">
       <div>
-        <p className="mb-3 text-center text-xs uppercase tracking-wide-label text-ink/60">
+        <p className="mb-3 text-center text-xs uppercase tracking-wide-label text-ink/75">
           Will you be joining us?
         </p>
         <div className="flex gap-4">
@@ -74,8 +87,8 @@ export default function RSVPForm({ onSubmitted }) {
             onClick={() => setForm((f) => ({ ...f, status: 'yes' }))}
             className={`flex-1 rounded-2xl border-2 px-4 py-6 text-center transition ${
               form.status === 'yes'
-                ? 'border-ink bg-ink text-cream'
-                : 'border-ink/20 text-ink/70 hover:border-ink/50'
+                ? 'border-olive bg-olive text-cream'
+                : 'border-ink/20 text-ink/70 hover:border-olive/60'
             }`}
           >
             <span className="block text-2xl">🎉</span>
@@ -88,8 +101,8 @@ export default function RSVPForm({ onSubmitted }) {
             onClick={() => setForm((f) => ({ ...f, status: 'no' }))}
             className={`flex-1 rounded-2xl border-2 px-4 py-6 text-center transition ${
               form.status === 'no'
-                ? 'border-ink bg-ink text-cream'
-                : 'border-ink/20 text-ink/70 hover:border-ink/50'
+                ? 'border-olive bg-olive text-cream'
+                : 'border-ink/20 text-ink/70 hover:border-olive/60'
             }`}
           >
             <span className="block text-2xl">💌</span>
@@ -101,7 +114,7 @@ export default function RSVPForm({ onSubmitted }) {
       </div>
 
       <label className="flex flex-col gap-1">
-        <span className="text-xs uppercase tracking-wide-label text-ink/60">
+        <span className="text-xs uppercase tracking-wide-label text-ink/75">
           Your name
         </span>
         <input
@@ -109,38 +122,74 @@ export default function RSVPForm({ onSubmitted }) {
           required
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-          className="rounded-lg border border-ink/20 bg-transparent px-4 py-3 text-ink outline-none focus:border-ink/60"
+          className="rounded-lg border border-ink/20 bg-transparent px-4 py-3 text-ink outline-none focus:border-olive"
           placeholder="First Name Last Name"
         />
       </label>
 
       {form.status === 'yes' && (
-        <label className="flex flex-col gap-1">
-          <span className="text-xs uppercase tracking-wide-label text-ink/60">
+        <div className="flex flex-col gap-1">
+          <label
+            htmlFor="guests"
+            className="text-xs uppercase tracking-wide-label text-ink/75"
+          >
             Number of guests (including you)
-          </span>
-          <input
-            type="number"
-            min={1}
-            max={10}
-            value={form.guests}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, guests: Number(e.target.value) }))
-            }
-            className="rounded-lg border border-ink/20 bg-transparent px-4 py-3 text-ink outline-none focus:border-ink/60"
-          />
-        </label>
+          </label>
+          <div className="flex items-stretch overflow-hidden rounded-lg border border-ink/20 focus-within:border-olive">
+            <button
+              type="button"
+              aria-label="Decrease number of guests"
+              onClick={() => changeGuests(-1)}
+              disabled={(Number(form.guests) || MIN_GUESTS) <= MIN_GUESTS}
+              className="w-14 shrink-0 text-2xl text-olive transition hover:bg-olive/10 disabled:opacity-30 disabled:hover:bg-transparent"
+            >
+              &minus;
+            </button>
+            <input
+              id="guests"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="off"
+              value={form.guests}
+              onChange={(e) => {
+                // whole numbers only: strip anything that isn't a digit
+                const digits = e.target.value.replace(/\D/g, '').slice(0, 2)
+                setForm((f) => ({
+                  ...f,
+                  guests: digits === '' ? '' : Math.min(MAX_GUESTS, Number(digits)),
+                }))
+              }}
+              onBlur={() =>
+                setForm((f) => ({
+                  ...f,
+                  guests: Math.max(MIN_GUESTS, Number(f.guests) || MIN_GUESTS),
+                }))
+              }
+              className="w-full min-w-0 border-x border-ink/20 bg-transparent py-3 text-center text-lg text-ink outline-none"
+            />
+            <button
+              type="button"
+              aria-label="Increase number of guests"
+              onClick={() => changeGuests(1)}
+              disabled={(Number(form.guests) || MIN_GUESTS) >= MAX_GUESTS}
+              className="w-14 shrink-0 text-2xl text-olive transition hover:bg-olive/10 disabled:opacity-30 disabled:hover:bg-transparent"
+            >
+              +
+            </button>
+          </div>
+        </div>
       )}
 
       <label className="flex flex-col gap-1">
-        <span className="text-xs uppercase tracking-wide-label text-ink/60">
+        <span className="text-xs uppercase tracking-wide-label text-ink/75">
           A greeting for the couple (optional)
         </span>
         <textarea
           value={form.greeting}
           onChange={(e) => setForm((f) => ({ ...f, greeting: e.target.value }))}
           rows={3}
-          className="resize-none rounded-lg border border-ink/20 bg-transparent px-4 py-3 text-ink outline-none focus:border-ink/60"
+          className="resize-none rounded-lg border border-ink/20 bg-transparent px-4 py-3 text-ink outline-none focus:border-olive"
           placeholder="Wishing you a lifetime of love..."
         />
       </label>
@@ -148,7 +197,7 @@ export default function RSVPForm({ onSubmitted }) {
       <button
         type="submit"
         disabled={!canSubmit || state === 'submitting'}
-        className="rounded-full bg-ink px-8 py-3 text-sm uppercase tracking-wide-label text-cream transition disabled:opacity-40"
+        className="rounded-full bg-olive px-8 py-3 text-sm uppercase tracking-wide-label text-cream transition disabled:opacity-40"
       >
         {state === 'submitting' ? 'Sending…' : 'Send RSVP'}
       </button>

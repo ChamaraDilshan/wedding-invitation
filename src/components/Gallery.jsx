@@ -1,11 +1,11 @@
 import { GALLERY } from '../data/config.js'
-import { BotanicalTopRight } from './Botanical.jsx'
+import { LilyDivider } from './Botanical.jsx'
 
 export default function Gallery() {
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="mb-10 flex justify-center">
-        <BotanicalTopRight className="h-20 w-32 rotate-90 text-ink/40" />
+      <div className="mb-8 flex justify-center">
+        <LilyDivider className="w-64 sm:w-80" />
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {GALLERY.map((src, i) => (

@@ -8,7 +8,7 @@ export default function LocationMap() {
   return (
     <div className="mx-auto max-w-2xl text-center">
       <p className="font-display text-xl italic text-ink">{VENUE.name}</p>
-      <p className="mt-1 text-sm text-ink/60">{VENUE.address}</p>
+      <p className="mt-1 text-sm text-ink/75">{VENUE.address}</p>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-ink/10 shadow-sm">
         <iframe

@@ -29,20 +29,20 @@ export default function Countdown({ targetDateISO }) {
 
   if (timeLeft.total <= 0) {
     return (
-      <p className="font-display italic text-2xl text-cream/90">
+      <p className="font-display text-2xl italic text-leaf">
         Today is the day! ✨
       </p>
     )
   }
 
   return (
-    <div className="flex gap-6 sm:gap-8">
+    <div className="flex gap-5 sm:gap-8">
       {units.map((u) => (
         <div key={u.label} className="text-center">
-          <div className="font-display italic text-4xl sm:text-5xl text-cream tabular-nums">
+          <div className="font-display text-4xl font-medium italic tabular-nums text-leaf sm:text-5xl">
             {String(u.value).padStart(2, '0')}
           </div>
-          <div className="mt-1 text-[11px] tracking-wide-label uppercase text-cream/60">
+          <div className="mt-1 text-[11px] font-semibold uppercase tracking-wide-label text-ink/70">
             {u.label}
           </div>
         </div>

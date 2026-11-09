@@ -1,13 +1,16 @@
 import Countdown from './Countdown.jsx'
-import { BotanicalTopRight, BotanicalBottomLeft } from './Botanical.jsx'
+import { LilyCluster } from './Botanical.jsx'
 import { COUPLE } from '../data/config.js'
 
 export default function Hero({ onRSVPClick }) {
   const weddingDate = new Date(COUPLE.weddingDateISO)
-  const formattedDate = weddingDate.toLocaleDateString('en-US', {
-    month: 'long',
+  // Always show the date as it is in Sri Lanka, whatever the viewer's timezone.
+  const formattedDate = weddingDate.toLocaleDateString('en-GB', {
+    weekday: 'long',
     day: 'numeric',
+    month: 'long',
     year: 'numeric',
+    timeZone: 'Asia/Colombo',
   })
 
   return (
@@ -21,34 +24,46 @@ export default function Hero({ onRSVPClick }) {
         />
       </div>
 
-      {/* Right: details panel — the only section shown on mobile */}
-      <div className="panel-texture relative flex w-full flex-col items-center justify-center px-8 py-16 text-center md:w-1/2">
-        <BotanicalTopRight className="pointer-events-none absolute right-4 top-4 h-56 w-40 text-cream/25 sm:right-8 sm:top-8" />
-        <BotanicalBottomLeft className="pointer-events-none absolute bottom-4 left-4 h-64 w-44 text-cream/25 sm:bottom-8 sm:left-8" />
+      {/* Right: invitation panel — the only section shown on mobile */}
+      <div className="panel-texture relative flex w-full flex-col items-center justify-center px-8 py-20 text-center md:w-1/2">
+        {/* Gold frame, like the printed card */}
+        <div
+          className="pointer-events-none absolute inset-4 border border-gold sm:inset-8"
+          aria-hidden="true"
+        />
 
-        <div className="relative z-10 flex max-w-sm flex-col items-center gap-8">
-          <p className="font-display text-base italic text-cream/80 sm:text-lg">
-            We joyfully invite you
+        <LilyCluster className="pointer-events-none absolute -bottom-2 -left-3 w-40 sm:bottom-2 sm:left-0 sm:w-60" />
+        <LilyCluster className="pointer-events-none absolute -right-3 -top-2 w-32 rotate-180 sm:right-0 sm:top-2 sm:w-52" />
+
+        <div className="relative z-10 flex max-w-sm flex-col items-center gap-7">
+          <p className="font-display text-xs font-semibold uppercase leading-relaxed tracking-[0.22em] text-ink/80 sm:text-sm">
+            Together with
             <br />
-            to the wedding of
+            our loving families
           </p>
 
           <div>
-            <h1 className="font-script text-6xl leading-tight text-cream sm:text-7xl">
+            <h1 className="font-script text-6xl leading-tight text-leaf sm:text-7xl">
               {COUPLE.name1}
             </h1>
-            <p className="font-display my-1 text-sm italic text-cream/70">and</p>
-            <h1 className="font-script text-6xl leading-tight text-cream sm:text-7xl">
+            <p className="font-script text-3xl leading-none text-gold">&amp;</p>
+            <h1 className="font-script text-6xl leading-tight text-leaf sm:text-7xl">
               {COUPLE.name2}
             </h1>
           </div>
 
-          <p className="font-display text-lg text-cream/90 sm:text-xl">
+          <p className="font-display text-xs font-semibold uppercase leading-relaxed tracking-[0.2em] text-ink/80 sm:text-sm">
+            Request the honour of your presence
+            <br />
+            at our marriage ceremony
+          </p>
+
+          <p className="font-display text-lg font-semibold uppercase tracking-[0.12em] text-ink sm:text-xl">
             {formattedDate}
           </p>
 
-          <div className="flex flex-col items-center gap-6">
-            <p className="text-xs tracking-wide-label uppercase text-gold">
+          <div className="flex flex-col items-center gap-5">
+            <p className="font-display text-xs font-semibold uppercase tracking-wide-label text-olive">
               Save the Date
             </p>
             <Countdown targetDateISO={COUPLE.weddingDateISO} />
@@ -56,7 +71,7 @@ export default function Hero({ onRSVPClick }) {
 
           <button
             onClick={onRSVPClick}
-            className="mt-2 rounded-full border border-cream/40 px-8 py-3 text-xs tracking-wide-label uppercase text-cream transition hover:bg-cream/10"
+            className="mt-1 rounded-full bg-olive px-9 py-3 text-xs font-semibold uppercase tracking-wide-label text-cream shadow-sm transition hover:brightness-110"
           >
             RSVP
           </button>

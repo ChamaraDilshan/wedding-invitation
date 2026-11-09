@@ -4,7 +4,7 @@ export const COUPLE = {
   name1: 'Sandali',
   name2: 'Chamara',
   // ISO date string, in the timezone the wedding takes place
-  weddingDateISO: '2026-12-19T16:00:00',
+  weddingDateISO: '2026-12-19T17:00:00+05:30', // ceremony begins 5:00 PM (Sri Lanka time)
   venue: 'The Grand Walawwa',
   photo: '/couple.jpeg', // put your photo in the /public folder with this name
 }
@@ -15,10 +15,14 @@ export const AGENDA = [
   {
     title: 'Ceremony',
     date: 'Saturday, December 19, 2026',
-    timeRange: 'From 4:00 PM to 11:30 PM',
-    location: 'The Grand Walawwa, Kegalle',
-  }
+    timeRange: 'From 4:30 PM to 11:00 PM',
+    note: 'Ceremony begins at 5:00 PM',
+    location: 'The Grand Walawwa, No 190/8, Kandy Road, Kegalle',
+  },
 ]
+
+// Script line shown under the agenda (from the printed card).
+export const FOOTNOTE = 'Reception to follow'
 
 // A short verse or quote shown under the agenda.
 export const LOVE_QUOTE = `Love is patient, love is kind,
@@ -53,7 +57,7 @@ export const GALLERY = [
 // address here — no API key needed for the embedded map.
 export const VENUE = {
   name: 'The Grand Walawwa',
-  address: 'The Grand Walawwa, Kegalle',
+  address: 'The Grand Walawwa, No 190/8, Kandy Road, Kegalle',
 }
 
 // Background music. Put an MP3 you have the rights to use in /public

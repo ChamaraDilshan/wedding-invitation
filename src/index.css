@@ -5,7 +5,16 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #f7f3ec;
+  background-color: #f8f8ef;
+  color: #3b2f2a;
+}
+
+body {
+  /* soft watercolour wash, like the printed card */
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(107, 125, 58, 0.07), transparent 45%),
+    radial-gradient(ellipse at 90% 100%, rgba(107, 125, 58, 0.06), transparent 45%);
+  background-attachment: fixed;
 }
 
 * {
@@ -13,10 +22,10 @@ html, body {
 }
 
 .panel-texture {
-  background-color: #2f3542;
+  background-color: #f8f8ef;
   background-image:
-    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.03) 0%, transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(255,255,255,0.03) 0%, transparent 40%);
+    radial-gradient(circle at 15% 85%, rgba(107, 125, 58, 0.09) 0%, transparent 45%),
+    radial-gradient(circle at 85% 12%, rgba(107, 125, 58, 0.08) 0%, transparent 45%);
 }
 
 .tracking-wide-label {

@@ -4,13 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#2f3542',        // deep navy-charcoal panel
-        inkdeep: '#232833',
-        cream: '#f7f3ec',
-        gold: '#c9a86a',
+        // Lily invitation palette (sampled from the printed card)
+        cream: '#f8f8ef',   // ivory paper
+        ink: '#3b2f2a',     // deep brown text
+        olive: '#5f6f31',   // buttons + small green text (AA contrast on ivory)
+        leaf: '#6b7d3a',    // large script names, decorative greens
+        gold: '#c99a2e',    // frame / ornaments (decorative only, not small text)
       },
       fontFamily: {
-        script: ['"Alex Brush"', 'cursive'],
+        script: ['"Great Vibes"', 'cursive'],
         display: ['"Cormorant Garamond"', 'serif'],
         label: ['"Cormorant Garamond"', 'serif'],
       },

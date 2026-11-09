@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react'
 import { APPS_SCRIPT_URL } from '../data/config.js'
 
-const SHOW_MS = 2000
-const GAP_MS = 1500
+const FADE_MS = 700 // fade in/out duration (keep in sync with duration-700 below)
+
+// Longer greetings stay on screen longer: ~2.5s base + 60ms per character,
+// never less than 4s and never more than 10s.
+function readTimeMs(text) {
+  return Math.min(10000, Math.max(4000, 2500 + (text?.length || 0) * 60))
+}
 
 export default function GreetingsLoop({ refreshKey }) {
   const [greetings, setGreetings] = useState([])
@@ -18,7 +23,7 @@ export default function GreetingsLoop({ refreshKey }) {
         const res = await fetch(APPS_SCRIPT_URL)
         const data = await res.json()
         const withMessages = (Array.isArray(data) ? data : []).filter(
-          (row) => row.greeting && row.greeting.trim().length > 0,
+          (row) => row.greeting && String(row.greeting).trim().length > 0,
         )
         if (!cancelled) {
           setGreetings(withMessages)
@@ -38,39 +43,30 @@ export default function GreetingsLoop({ refreshKey }) {
     }
   }, [refreshKey])
 
+  // Show the current greeting, fade it out, then move to the next one.
   useEffect(() => {
-    if (status !== 'ready' || greetings.length === 0) return
+    if (status !== 'ready' || greetings.length < 2) return
 
-    let timeout
-    let cancelled = false
+    const showFor = readTimeMs(greetings[index]?.greeting)
+    const fadeOut = setTimeout(() => setVisible(false), showFor)
+    const next = setTimeout(() => {
+      setIndex((i) => (i + 1) % greetings.length)
+      setVisible(true)
+    }, showFor + FADE_MS)
 
-    function cycle() {
-      timeout = setTimeout(() => {
-        if (cancelled) return
-        setVisible(false)
-        timeout = setTimeout(() => {
-          if (cancelled) return
-          setIndex((i) => (i + 1) % greetings.length)
-          setVisible(true)
-          cycle()
-        }, GAP_MS)
-      }, SHOW_MS)
-    }
-
-    cycle()
     return () => {
-      cancelled = true
-      clearTimeout(timeout)
+      clearTimeout(fadeOut)
+      clearTimeout(next)
     }
-  }, [status, greetings])
+  }, [status, greetings, index])
 
   if (status === 'loading') {
-    return <p className="text-center text-ink/50">Loading messages…</p>
+    return <p className="text-center text-ink/70">Loading messages…</p>
   }
 
   if (status === 'error' || greetings.length === 0) {
     return (
-      <p className="text-center text-ink/50">
+      <p className="text-center text-ink/70">
         Be the first to leave a message for the couple!
       </p>
     )
@@ -79,17 +75,31 @@ export default function GreetingsLoop({ refreshKey }) {
   const current = greetings[index]
 
   return (
-    <div className="mx-auto flex min-h-[10rem] max-w-md items-center justify-center px-6">
-      <div
-        className={`w-full rounded-[2rem] border border-white/40 bg-gradient-to-b from-sky-100/80 to-blue-900/90 px-8 py-8 text-center shadow-[0_18px_50px_rgba(47,53,66,0.18)] backdrop-blur-xl transition-opacity duration-[1500ms] ease-in-out sm:rounded-[2.25rem] sm:px-10 sm:py-10 ${
+    <div className="mx-auto flex min-h-[15rem] max-w-md items-center justify-center px-6">
+      <figure
+        aria-live="polite"
+        className={`relative w-full rounded-2xl border border-gold/70 bg-white/90 px-8 pb-8 pt-12 text-center shadow-[0_12px_40px_rgba(59,47,42,0.10)] transition-opacity duration-700 ease-in-out motion-reduce:transition-none sm:px-10 ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <p className="font-display italic text-ink/90">"{current.greeting}"</p>
-        <p className="mt-4 text-sm uppercase tracking-wide-label text-white/80">
-          — {current.name || 'A guest'}
-        </p>
-      </div>
+        {/* decorative opening quote */}
+        <span
+          aria-hidden="true"
+          className="absolute left-1/2 top-2 -translate-x-1/2 font-display text-6xl leading-none text-gold"
+        >
+          &ldquo;
+        </span>
+
+        <blockquote className="whitespace-pre-line break-words font-display text-xl italic leading-relaxed text-ink sm:text-2xl">
+          {current.greeting}
+        </blockquote>
+
+        <div className="mx-auto my-5 h-px w-16 bg-gold/70" aria-hidden="true" />
+
+        <figcaption className="font-display text-sm font-semibold uppercase tracking-wide-label text-olive">
+          {current.name || 'A guest'}
+        </figcaption>
+      </figure>
     </div>
   )
 }
