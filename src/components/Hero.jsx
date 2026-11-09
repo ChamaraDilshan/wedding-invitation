@@ -14,17 +14,22 @@ export default function Hero({ onRSVPClick }) {
   })
 
   return (
-    <section className="relative flex min-h-screen w-full overflow-hidden">
-      {/* Left: photo panel — hidden on mobile per requirement */}
-      <div className="relative hidden w-1/2 md:block">
+    <section className="relative flex min-h-screen w-full flex-col overflow-hidden md:flex-row">
+      {/* Photo panel: left half on desktop, landing image across the top on mobile */}
+      <div className="relative h-[72svh] w-full md:h-auto md:w-1/2">
         <img
           src={COUPLE.photo}
           alt={`${COUPLE.name1} and ${COUPLE.name2}`}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover object-[center_30%] md:object-center"
+        />
+        {/* mobile only: fade the photo into the ivory invitation panel below */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-cream to-transparent md:hidden"
+          aria-hidden="true"
         />
       </div>
 
-      {/* Right: invitation panel — the only section shown on mobile */}
+      {/* Right: invitation panel (sits under the photo on mobile) */}
       <div className="panel-texture relative flex w-full flex-col items-center justify-center px-8 py-20 text-center md:w-1/2">
         {/* Gold frame, like the printed card */}
         <div

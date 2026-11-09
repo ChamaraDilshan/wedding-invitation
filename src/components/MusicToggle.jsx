@@ -114,7 +114,7 @@ export default function MusicToggle() {
           type="button"
           onClick={toggle}
           aria-label={playing ? 'Pause background music' : 'Play background music'}
-          className="fixed bottom-6 right-6 z-[400] flex h-14 w-14 touch-manipulation items-center justify-center rounded-full bg-gold text-2xl text-ink shadow-xl ring-2 ring-cream transition hover:brightness-110"
+          className="fixed right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-[400] flex h-14 w-14 touch-manipulation items-center justify-center rounded-full bg-gold text-2xl text-ink shadow-xl ring-2 ring-cream transition hover:brightness-110"
         >
           <span
             className={playing ? 'inline-block animate-spin-slow' : 'inline-block'}
