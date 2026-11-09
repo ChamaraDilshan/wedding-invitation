@@ -73,7 +73,7 @@ export default function MusicToggle() {
       <audio ref={audioRef} src={MUSIC_SRC} loop preload="auto" playsInline />
 
       {promptOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center px-5 sm:px-8">
+        <div className="fixed inset-0 z-[400] flex items-center justify-center px-5 sm:px-8">
           <div className="absolute inset-0 bg-ink/30" />
           <div
             role="dialog"
@@ -114,7 +114,7 @@ export default function MusicToggle() {
           type="button"
           onClick={toggle}
           aria-label={playing ? 'Pause background music' : 'Play background music'}
-          className="fixed bottom-6 right-6 z-[100] flex h-14 w-14 touch-manipulation items-center justify-center rounded-full bg-gold text-2xl text-ink shadow-xl ring-2 ring-cream transition hover:brightness-110"
+          className="fixed bottom-6 right-6 z-[400] flex h-14 w-14 touch-manipulation items-center justify-center rounded-full bg-gold text-2xl text-ink shadow-xl ring-2 ring-cream transition hover:brightness-110"
         >
           <span
             className={playing ? 'inline-block animate-spin-slow' : 'inline-block'}
