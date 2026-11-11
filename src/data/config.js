@@ -35,14 +35,14 @@ export const BRIDE = {
   name: 'Sandali',
   role: 'The Bride',
   photo: '/bride.jpeg',
-  note: 'A funny note about the bride\u2019s personality or a romantic quote from her.',
+  note: 'Daughter of Mrs. Susantha and Mr. Nihal',
 }
 
 export const GROOM = {
   name: 'Chamara',
   role: 'The Groom',
   photo: '/groom.jpeg',
-  note: 'A funny note about the groom\u2019s personality or a romantic quote from him.',
+  note: 'Son of Mrs. Manori and Mr. Hasitha',
 }
 
 // Photo gallery — add paths to images placed in /public.

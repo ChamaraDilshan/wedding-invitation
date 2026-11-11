@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { APPS_SCRIPT_URL, RSVP_SECRET } from '../data/config.js'
+import { googleCalendarUrl, downloadIcs } from '../utils/calendar.js'
 
 const MIN_GUESTS = 1
 const MAX_GUESTS = 10
@@ -14,6 +15,7 @@ const initialForm = {
 export default function RSVPForm({ onSubmitted }) {
   const [form, setForm] = useState(initialForm)
   const [state, setState] = useState('idle') // idle | submitting | success | error
+  const [attending, setAttending] = useState(false) // did the last submission say yes?
 
   const canSubmit = form.status && form.name.trim().length > 0
 
@@ -49,6 +51,7 @@ export default function RSVPForm({ onSubmitted }) {
           secret: RSVP_SECRET,
         }),
       })
+      setAttending(form.status === 'yes')
       setState('success')
       setForm(initialForm)
       onSubmitted?.()
@@ -65,9 +68,39 @@ export default function RSVPForm({ onSubmitted }) {
         <p className="mt-2 text-ink/70">
           Your response has been received. We can't wait to celebrate with you.
         </p>
+        {attending && (
+          <div className="mt-8 border-t border-gold/50 pt-6">
+            <p className="text-xs uppercase tracking-wide-label text-ink/75">
+              Add a reminder to your calendar
+            </p>
+            <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <a
+                href={googleCalendarUrl()}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full rounded-full bg-olive px-6 py-3 text-xs font-semibold uppercase tracking-wide-label text-cream transition hover:brightness-110 sm:w-auto"
+              >
+                Google Calendar
+              </a>
+              <button
+                type="button"
+                onClick={downloadIcs}
+                className="w-full rounded-full border border-olive px-6 py-3 text-xs font-semibold uppercase tracking-wide-label text-olive transition hover:bg-olive/10 sm:w-auto"
+              >
+                Apple / Outlook
+              </button>
+            </div>
+            <p className="mt-3 text-xs text-ink/70">
+              Apple and Outlook reminders go off 1 day and 3 hours before.
+            </p>
+          </div>
+        )}
         <button
           className="mt-6 text-sm underline text-ink/75"
-          onClick={() => setState('idle')}
+          onClick={() => {
+            setAttending(false)
+            setState('idle')
+          }}
         >
           Submit another response
         </button>
